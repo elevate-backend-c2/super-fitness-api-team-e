@@ -111,6 +111,9 @@ export abstract class AbstractRepository<T extends ObjectLiteral> {
   async delete(where: string, params: any[] = []): Promise<T | null> {
     const query = `DELETE FROM ${this.tableName} WHERE ${where} RETURNING *`;
     const result = await this.dataSource.query(query, params);
-    return result[0] || null;
+    if (result[1] === 0) {
+      return null;
+    }
+    return result[0][0];
   }
 }
