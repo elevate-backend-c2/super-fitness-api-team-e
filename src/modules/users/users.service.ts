@@ -14,7 +14,7 @@ export class UsersService {
   constructor(
     private readonly usersProfileRepository: UserProfileRepository,
     private readonly userRepo: UsersRepository,
-  ) { }
+  ) {}
 
   // ======================
   // CREATE USER
@@ -42,7 +42,7 @@ export class UsersService {
   async getOrCreateProfile(userId: string) {
     let profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (!profile) {
@@ -61,7 +61,7 @@ export class UsersService {
   async updateGender(userId: string, gender: Gender) {
     let profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (profile) {
@@ -81,7 +81,7 @@ export class UsersService {
   async updateAge(userId: string, age: number) {
     const profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (profile) {
@@ -98,7 +98,7 @@ export class UsersService {
   async updateWeight(userId: string, weight: number) {
     const profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (profile) {
@@ -117,7 +117,7 @@ export class UsersService {
   async updateHeight(userId: string, height: number) {
     const profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (profile) {
@@ -134,7 +134,7 @@ export class UsersService {
   async updateGoal(userId: string, goal: UserGoal) {
     const profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (profile) {
@@ -152,7 +152,7 @@ export class UsersService {
   async updateActivityLevel(userId: string, activityLevel: ActivityLevel) {
     let profile = await this.usersProfileRepository.findOne(
       'e.userId = :userId',
-      { userId }
+      { userId },
     );
 
     if (profile) {
@@ -160,9 +160,6 @@ export class UsersService {
       profile.registration_step = 6;
       profile = await this.usersProfileRepository.create(profile);
     }
-
-
-
 
     return profile;
   }
@@ -182,6 +179,7 @@ export class UsersService {
     }
 
     const isPasswordValid = await comparePassword(password, user.password);
+    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       throw new Error('Invalid credentials');
@@ -190,9 +188,6 @@ export class UsersService {
     return user;
   }
 
-  // ======================
-  // CHECK USER EXISTS
-  // ======================
   UserExistsByEmail = async (email: string): Promise<User> => {
     const user = await this.userRepo.findOne('e.email = :email', {
       email,
@@ -204,14 +199,4 @@ export class UsersService {
 
     return user;
   };
-
-  // ======================
-  // GET USER DATA
-  // ======================
-  async getUserData(userId: string) {
-    return this.usersProfileRepository.findOne(
-      'e.userId = :userId',
-      { userId }
-    );
-  }
 }

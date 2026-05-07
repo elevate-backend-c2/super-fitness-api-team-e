@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  BeforeInsert,
+} from 'typeorm';
 import { UserProfile } from './complete.register.entity';
 import { UserRole } from '../../../common/constants/user-role.constants';
 
@@ -26,8 +32,11 @@ export class User {
   })
   role: UserRole;
 
-  @OneToOne(() => UserProfile, (profile) => profile.user, {
-    cascade: true,
-  })
-  profile: UserProfile;
+  // @OneToOne(() => UserProfile, (profile) => profile.user, {
+  //   cascade: true,
+  // })
+  // @BeforeInsert()
+  // async hashPassword() {
+  //   this.password = await hashPassword(this.password);
+  // }
 }
