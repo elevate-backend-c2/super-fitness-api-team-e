@@ -11,6 +11,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BullModule } from '@nestjs/bull';
 import { JobsModule } from './modules/jobs/jobs.module';
+import { FoodRecommendationsModule } from './modules/food-recomendations/food-recomendations.module';
 import { HomeModule } from './modules/home/home.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { SubCategoriesModule } from './modules/sub-categories/sub-categories.module';
@@ -61,6 +62,7 @@ import { SeedService } from './DB/seeder/seeder.service';
     OnboardingModule,
     FileUploadModule,
     JobsModule,
+    FoodRecommendationsModule,
     HomeModule,
     CategoriesModule,
     SubCategoriesModule,

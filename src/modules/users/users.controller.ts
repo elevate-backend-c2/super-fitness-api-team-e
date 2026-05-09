@@ -1,4 +1,4 @@
-import { Controller, Body, Patch, Req, Post, Get } from '@nestjs/common';
+import { Controller, Body, Patch, Req, Post, Get, BadRequestException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import type { AuthRequest } from '../../common/types/req.type';
 import type { Gender } from './dto/gender.type';
@@ -9,6 +9,8 @@ import {
   UpdateGoalDto,
 } from './dto/update-goal-and-activity.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('users')
 @ApiBearerAuth()
@@ -39,6 +41,22 @@ export class UsersController {
   })
   createUser(@Body() dto: CreateUserDto) {
     return this.usersService.createUser(dto);
+  }
+
+
+  @Post('get-or-create-profile')
+  @ApiOperation({ summary: 'Get or create user profile' })
+  @ApiResponse({
+    status: 200,
+    description: 'User profile retrieved or created successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+  })
+  getOrCreateProfile(@Req() req: AuthRequest) {
+    const userId = req.user.id;
+    return this.usersService.getOrCreateProfile(userId);
   }
 
   @Patch('gender')
@@ -85,10 +103,24 @@ export class UsersController {
     );
   }
 
+  @Patch('update-profile')
+  @ApiBody({ type: UpdateProfileDto })
+  updateUserProfile(
+    @Req() req: AuthRequest,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new BadRequestException('Authenticated user ID is missing');
+    }
 
-  @Get("get-user-data")
-  getUserData(@Req() req: AuthRequest) {
-    const userId = req.user.id;
-    return this.usersService.getUserData(userId);
+    return this.usersService.updateUserProfile(userId, updateProfileDto);
   }
+
+//  @Get("get-user-data")
+//   getUserData(@Req() req: AuthRequest) {
+//     const userId = req.user.id;
+//     return this.usersService.getUserData(userId);
+//   }
 }
+
