@@ -13,10 +13,7 @@ import { BullModule } from '@nestjs/bull';
 import { JobsModule } from './modules/jobs/jobs.module';
 import { FoodRecommendationsModule } from './modules/food-recomendations/food-recomendations.module';
 import { HomeModule } from './modules/home/home.module';
-import { CategoriesModule } from './modules/categories/categories.module';
-import { SubCategoriesModule } from './modules/sub-categories/sub-categories.module';
-import { ExercisesModule } from './modules/exercises/exercises.module';
-import { SeedService } from './DB/seeder/seeder.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -64,11 +61,8 @@ import { SeedService } from './DB/seeder/seeder.service';
     JobsModule,
     FoodRecommendationsModule,
     HomeModule,
-    CategoriesModule,
-    SubCategoriesModule,
-    ExercisesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SeedService],
+  providers: [AppService],
 })
 export class AppModule {}

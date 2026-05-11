@@ -245,3 +245,12 @@ export class UsersService {
     return Math.round(calories);
   }
   };
+    });
+
+    if (!user) {
+      throw new Error('Invalid credentials');
+    }
+
+    return user;
+  };
+}

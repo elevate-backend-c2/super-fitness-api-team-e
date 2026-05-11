@@ -15,15 +15,7 @@ import { AuthGuard } from '../../common/guards/auth.guard';
 @Controller('users')
 @ApiBearerAuth()
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
-
-
-
-
-
-
-
-
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create new user' })
@@ -122,5 +114,10 @@ export class UsersController {
 //     const userId = req.user.id;
 //     return this.usersService.getUserData(userId);
 //   }
+  @Get('get-user-data')
+  getUserData(@Req() req: AuthRequest) {
+    const userId = req.user.id;
+    return this.usersService.getOrCreateProfile(userId);
+  }
 }
 
