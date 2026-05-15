@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { UserProfile } from '../../../modules/users/entities/complete.register.entity';
-
+import { ConfigService } from '@nestjs/config';
 interface FoodItem {
   id: number;
   name: string;
@@ -18,21 +18,22 @@ interface FoodItem {
 
 @Injectable()
 export class FoodProviderService {
-  private API_KEY = process.env.SPOONACULAR_KEY || 'e1132e8ad51f402798349f81fe011a5b';
 
 
-  constructor(private http: HttpService) {}
+
+  constructor(private http: HttpService ,
+    private readonly configService: ConfigService )
+     {}
 
   async fetchFoods(user: UserProfile, mealType: string): Promise<FoodItem[]> {
     try {
       const targetCalories = this.getMealTarget(user, mealType);
-
-      const url = `https://api.spoonacular.com/recipes/complexSearch`;
+      const url = `${this.configService.get<string>('SPOONACULAR_URL')}`;
 
       const response = await firstValueFrom(
         this.http.get(url, {
           params: {
-            apiKey: this.API_KEY,
+            apiKey: this.configService.get<string>('SPOONACULAR_KEY'),
             type: mealType,
             addRecipeNutrition: true,
             number: 20,
